@@ -1,0 +1,246 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Detail - The Great Gatsby - BookSwap</title>
+    <link rel="stylesheet" href="{% static 'styles-book-detail.css' %}">
+    <link rel="stylesheet" href="{% static 'styles-common.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="{% static 'book.png' %}" alt="BookSwap Logo">
+                <span>BookSwap</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'catalog' %}">Catalog</a></li>
+                    {% if user.is_authenticated %}
+                    <li><a href="chat.html">Messages</a></li>
+                    <li><a href="{% url 'profile' %}">{{user.username}}</a></li>
+                    <li><a href="{% url 'logout' %}" class="logout-link">Logout</a></li>
+                    {% else %}
+                    <li><a href="{% url 'login' %}" class="logout-link">Login</a></li>
+                    <li><a href="{% url 'signup' %}">Signup</a></li>
+                    
+                    {% endif %}
+                </ul>
+            </nav>
+            <div class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="book-detail-page">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="catalog.html">Catalog</a>
+                <span class="breadcrumb-separator">›</span>
+                <span class="current-page">{{ book.book_title }}</span>
+            </div>
+
+            <div class="book-detail-container">
+                <!-- Book Images Section -->
+                <div class="book-images">
+                    <div class="book-main-image">
+                        <img src="{{ book.coverimage.url }}" alt="{{ book.book_title }}">
+                    </div>
+                    <div class="book-thumbnails">
+                        <div class="book-thumbnail active">
+                            <img src="{{ book.additional_image1.url }}" alt="{{ book.book_title }}">
+                        </div>
+                        <div class="book-thumbnail">
+                            <img src="{{ book.additional_image2.url }}" alt="{{ book.book_title }}">
+                        </div>
+                        <div class="book-thumbnail">
+                            <img src="{{ book.additional_image3.url }}" alt="{{ book.book_title }}">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Book Info Section -->
+                <div class="book-details">
+                    <div class="book-header">
+                        <h1>{{ book.book_title }}</h1>
+                        <div class="book-price">₹{{book.price}}</div>
+                    </div>
+                    
+                    <p class="book-author">{{ book.author }}</p>
+                    
+                    <div class="book-meta-tags">
+                        <span class="book-category">{{ book.category }}</span>
+                        <span class="book-condition">{{ book.condition }}</span>
+                    </div>
+                    
+                    <div class="book-description">
+                        <h2>About this book</h2>
+                        <p>{{ book.description }}</p>
+                    </div>
+                    
+                    <div class="book-details-list">
+                        <div class="detail-item">
+                            <span class="detail-label">Publisher:</span>
+                            <span class="detail-value">{{ book.publisher }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Language:</span>
+                            <span class="detail-value">{{ book.language }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Condition:</span>
+                            <span class="detail-value">{{ book.condition }}</span>
+                        </div>
+                    </div>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'user_profile' book.user.username %}"><div class="book-owner-detail">
+                        <h2>Book Owner</h2>
+                        <div class="owner-card">
+                            <div class="owner-avatar">
+                                <img src="{{book.user.userprofile.profile_pic.url}}" alt="{{book.user.username}}" style="width: 50px; height: 60px; border-radius: 10px;">
+                            </div>
+                            <div class="owner-info">
+                                <h3>{{book.user.username}}</h3>
+                                <p class="owner-location">{{book.location}}</p>
+                            </div>
+                        </div>
+                    </div></a>
+                    <a href="{% url 'chat' book.user.username %}"><div class="book-actions">
+                        <button class="btn btn-outline btn-block">Message Owner</button>
+                    </div></a>
+                    {% else %}
+                    <a href="{% url 'login' %}"><div class="book-owner-detail">
+                        <h2>Book Owner</h2>
+                        <div class="owner-card">
+                            <div class="owner-avatar">
+                                <img src="{{book.user.userprofile.profile_pic.url}}" alt="{{book.user.username}}">
+                            </div>
+                            <div class="owner-info">
+                                <h3>{{book.user.username}}</h3>
+                                <p class="owner-location">{{book.location}}</p>
+                            </div>
+                        </div>
+                    </div></a>
+                    <a href="{% url 'login' %}"><div class="book-actions">
+                        <button class="btn btn-outline btn-block">Login to message {{book.user.first_name}}</button>
+                    </div></a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Similar Books Section -->
+            <div class="similar-books-section">
+                <h2>Similar Books You Might Like</h2>
+                
+                <div class="similar-books-grid">
+                    {% for book in all_books %}
+                    <a href="{% url 'book-details' book.book_id %}" class="book-card-link">
+                        <div class="catalog-book-card">
+                            <div class="book-cover">
+                                <img src="{{ book.coverimage.url }}" alt="{{book.book_title}}" style="width: 200px; height: 280px; object-fit: cover;">
+                                <div class="book-price">${{book.price}}</div>
+                            </div>
+                            <div class="book-info">
+                                <h4>{{book.book_title|truncatechars:15}}</h4>
+                                <p class="book-author">{{book.author|truncatechars:10}}</p>
+                                <div class="book-meta">
+                                    <span class="book-category">{{book.category}}</span>
+                                    <span class="book-condition">{{book.condition}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div> 
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <h3>BookSwap</h3>
+                    <p>Connecting readers, one book at a time.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="catalog.html">Catalog</a></li>
+                        <li><a href="profile.html">Profile</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">How It Works</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 BookSwap. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple mobile menu toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.querySelector('.main-nav').classList.toggle('active');
+            this.classList.toggle('active');
+        });
+
+        // Book thumbnail gallery
+        const thumbnails = document.querySelectorAll('.book-thumbnail');
+        const mainImage = document.querySelector('.book-main-image img');
+        
+        thumbnails.forEach(thumbnail => {
+            thumbnail.addEventListener('click', function() {
+                // Remove active class from all thumbnails
+                thumbnails.forEach(thumb => thumb.classList.remove('active'));
+                
+                // Add active class to clicked thumbnail
+                this.classList.add('active');
+                
+                // Update main image
+                const imgSrc = this.querySelector('img').src;
+                mainImage.src = imgSrc;
+            });
+        });
+
+        // Request Exchange button
+        document.querySelector('.book-actions .btn-primary').addEventListener('click', function() {
+            alert('Exchange request sent to Sarah Johnson!');
+        });
+
+        // Message Owner button
+        document.querySelector('.book-actions .btn-outline').addEventListener('click', function() {
+            window.location.href = 'chat.html';
+        });
+    </script>
+</body>
+</html>

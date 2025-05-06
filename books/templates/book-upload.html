@@ -1,0 +1,385 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Book - BookSwap</title>
+    <link rel="stylesheet" href="{% static 'styles-common.css' %}">
+    <link rel="stylesheet" href="{% static 'styles-book-upload.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="{% static 'book.png' %}" alt="BookSwap Logo">
+                <span>BookSwap</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'catalog' %}" class="active">Catalog</a></li>
+                    <li><a href="chat.html">Messages</a></li>
+                    <li><a href="profile.html">Profile</a></li>
+                    <li><a href="index.html" class="logout-link">Logout</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="book-upload-page">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="catalog.html">Catalog</a>
+                <span class="breadcrumb-separator">›</span>
+                <span class="current-page">Upload Book</span>
+            </div>
+
+            <div class="book-upload-container">
+                <div class="book-upload-header">
+                    <h1>Upload a Book</h1>
+                    <p>Share your book with the BookSwap community</p>
+                </div>
+
+                <form class="book-upload-form" action="{% url 'book-upload' %}" enctype="multipart/form-data" method="POST">
+                    {% csrf_token %}
+                    <div class="form-grid">
+                        <!-- Book Images Upload Section -->
+                        <div class="book-images-upload">
+                            <h3 class="form-section-title">Book Images</h3>
+                            
+                            <div class="main-image-upload">
+                                <div class="image-preview">
+                                    <img src="images/book-placeholder.jpg" alt="Book Cover" id="main-image-preview">
+                                    <label for="main-image" class="image-upload-overlay">
+                                        <img src="images/camera-icon.png" alt="Upload" class="image-upload-icon">
+                                    </label>
+                                </div>
+                                <input type="file" id="main-image" class="image-upload-btn" accept="image/*" name="cover_image">
+                                <label for="main-image" class="image-upload-label">Upload Cover Image</label>
+                            </div>
+                            
+                            <div class="additional-images">
+                                <p class="additional-images-label">Additional Images (Optional)</p>
+                                <div class="additional-images-grid">
+                                    <div class="additional-image-item">
+                                        <div class="image-preview small">
+                                            <img src="images/image-placeholder.jpg" alt="Additional Image" id="additional-image-1-preview">
+                                            <label for="additional-image-1" class="image-upload-overlay">
+                                                <img src="images/camera-icon.png" alt="Upload" class="image-upload-icon">
+                                            </label>
+                                        </div>
+                                        <input type="file" id="additional-image-1" class="image-upload-btn" accept="image/*" name="additional-image-1">
+                                    </div>
+                                    <div class="additional-image-item">
+                                        <div class="image-preview small">
+                                            <img src="images/image-placeholder.jpg" alt="Additional Image" id="additional-image-2-preview">
+                                            <label for="additional-image-2" class="image-upload-overlay">
+                                                <img src="images/camera-icon.png" alt="Upload" class="image-upload-icon">
+                                            </label>
+                                        </div>
+                                        <input type="file" id="additional-image-2" class="image-upload-btn" accept="image/*" name="additional-image-2">
+                                    </div>
+                                    <div class="additional-image-item">
+                                        <div class="image-preview small">
+                                            <img src="images/image-placeholder.jpg" alt="Additional Image" id="additional-image-3-preview">
+                                            <label for="additional-image-3" class="image-upload-overlay">
+                                                <img src="images/camera-icon.png" alt="Upload" class="image-upload-icon">
+                                            </label>
+                                        </div>
+                                        <input type="file" id="additional-image-3" class="image-upload-btn" accept="image/*" name="additional-image-3"> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Book Details Section -->
+                        <div class="book-details-form">
+                            <h3 class="form-section-title">Book Details</h3>
+                            
+                            <div class="form-group">
+                                <label for="book-title">Book Title*</label>
+                                <input type="text" id="book-title" required placeholder="Enter the book title" name="title">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="book-author">Author*</label>
+                                <input type="text" id="book-author" required placeholder="Enter the author's name" name="author">
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="book-price">Price*</label>
+                                    <div class="price-input-group">
+                                        <span>₹</span>
+                                        <input type="number" id="book-price" required min="0" step="0.01" placeholder="0.00" name="price">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="book-condition">Condition*</label>
+                                    <select id="book-condition" required name="condition">
+                                        <option value="">Select condition</option>
+                                        <option value="new">New</option>
+                                        <option value="like-new">Like New</option>
+                                        <option value="very-good">Very Good</option>
+                                        <option value="good">Good</option>
+                                        <option value="acceptable">Acceptable</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="book-category">Category*</label>
+                                <select id="book-category" required name="category">
+                                    <option value="">Select category</option>
+                                    <option value="fiction">Fiction</option>
+                                    <option value="non-fiction">Non-Fiction</option>
+                                    <option value="science-fiction">Science Fiction</option>
+                                    <option value="fantasy">Fantasy</option>
+                                    <option value="mystery">Mystery</option>
+                                    <option value="romance">Romance</option>
+                                    <option value="thriller">Thriller</option>
+                                    <option value="horror">Horror</option>
+                                    <option value="biography">Biography</option>
+                                    <option value="history">History</option>
+                                    <option value="self-help">Self-Help</option>
+                                    <option value="business">Business</option>
+                                    <option value="cooking">Cooking</option>
+                                    <option value="art">Art</option>
+                                    <option value="travel">Travel</option>
+                                    <option value="children">Children's</option>
+                                    <option value="young-adult">Young Adult</option>
+                                    <option value="poetry">Poetry</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            
+    
+                                <div class="form-group">
+                                    <label for="book-language">Language*</label>
+                                    <select id="book-language" required name="language">
+                                        <option value="">Select language</option>
+                                        <option value="english">English</option>
+                                        <option value="spanish">Spanish</option>
+                                        <option value="french">French</option>
+                                        <option value="german">German</option>
+                                        <option value="chinese">Chinese</option>
+                                        <option value="japanese">Japanese</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="book-publisher">Publisher (Optional)</label>
+                                    <input type="text" id="book-publisher" placeholder="Enter publisher name" name="publisher">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="book-description">Description*</label>
+                                <textarea id="book-description" rows="5" name="description" placeholder="Provide a detailed description of the book, including its plot, themes, and any notable features."></textarea>
+                            </div>
+                            
+                            <h3 class="form-section-title">Exchange Details</h3>
+                            
+                            <div class="form-group full-width">
+                                <label>Exchange Options</label>
+                                <div class="checkbox-group">
+                                    <input type="radio" value="localpickup" id="local-pickup" checked name="exchange-option">
+                                    <label for="local-pickup">Local pickup</label>
+                                </div>
+                                <div class="checkbox-group">
+                                    <input type="radio" value="Shipping" id="shipping" name="exchange-option">
+                                    <label for="shipping">Shipping (buyer pays shipping)</label>
+                                </div>
+                                <div class="checkbox-group">
+                                    <input type="radio" id="meetup" value='meetup' name="exchange-option">
+                                    <label for="meetup">Public meetup</label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="book-location">Location*</label>
+                                <input type="text" id="book-location" required placeholder="Enter your city or neighborhood" name="location">
+                                <p class="form-help-text">This helps local users find your book. Your exact address will not be shared.</p>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label>Additional Tags (Optional)</label>
+                                <div class="tags-input-container">
+                                    <div class="tags-container" id="tags-container"></div>
+                                    <input type="text" id="tag-input" placeholder="Type a tag and press Enter" name="tags">
+                                </div>
+                                <p class="form-help-text">Add relevant tags to help users find your book (e.g., "bestseller", "signed copy", "first edition")</p>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-outline">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Upload Book</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <h3>BookSwap</h3>
+                    <p>Connecting readers, one book at a time.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="catalog.html">Catalog</a></li>
+                        <li><a href="profile.html">Profile</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">How It Works</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 BookSwap. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple mobile menu toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.querySelector('.main-nav').classList.toggle('active');
+            this.classList.toggle('active');
+        });
+        
+        // Main image preview
+        document.getElementById('main-image').addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    document.getElementById('main-image-preview').src = e.target.result;
+                }
+                
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+        
+        // Additional images preview
+        document.getElementById('additional-image-1').addEventListener('change', function(e) {
+            previewImage(e, 'additional-image-1-preview');
+        });
+        
+        document.getElementById('additional-image-2').addEventListener('change', function(e) {
+            previewImage(e, 'additional-image-2-preview');
+        });
+        
+        document.getElementById('additional-image-3').addEventListener('change', function(e) {
+            previewImage(e, 'additional-image-3-preview');
+        });
+        
+        function previewImage(event, previewId) {
+            if (event.target.files && event.target.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    document.getElementById(previewId).src = e.target.result;
+                }
+                
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        }
+        
+        // Tags input functionality
+        const tagInput = document.getElementById('tag-input');
+        const tagsContainer = document.getElementById('tags-container');
+        let tags = [];
+        
+        tagInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ',') {
+                e.preventDefault();
+                
+                const tag = tagInput.value.trim();
+                if (tag && !tags.includes(tag) && tags.length < 10) {
+                    tags.push(tag);
+                    renderTags();
+                }
+                
+                tagInput.value = '';
+            }
+        });
+        
+        function renderTags() {
+            tagsContainer.innerHTML = '';
+            
+            tags.forEach((tag, index) => {
+                const tagElement = document.createElement('div');
+                tagElement.classList.add('tag');
+                tagElement.innerHTML = `
+                    <span>${tag}</span>
+                    <button type="button" class="remove-tag" data-index="${index}">&times;</button>
+                `;
+                tagsContainer.appendChild(tagElement);
+            });
+            
+            // Add event listeners to remove buttons
+            document.querySelectorAll('.remove-tag').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    tags.splice(index, 1);
+                    renderTags();
+                });
+            });
+        }
+        
+        // Form submission
+        // document.querySelector('.book-upload-form').addEventListener('submit', function(e) {
+        //     e.preventDefault();
+            
+        //     // Here you would normally send the form data to the server
+        //     // For this example, we'll just show a success message
+        //     alert('Book uploaded successfully!');
+        //     window.location.href = 'catalog.html';
+        // });
+        
+        // Cancel button
+        document.querySelector('.form-actions .btn-outline').addEventListener('click', function() {
+            if (confirm('Are you sure you want to cancel? All entered information will be lost.')) {
+                window.location.href = 'catalog.html';
+            }
+        });
+    </script>
+</body>
+</html>

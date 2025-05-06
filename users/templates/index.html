@@ -1,0 +1,244 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookSwap - Exchange Books with Fellow Readers</title>
+    <link rel="stylesheet" href="{% static 'styles-index.css' %}">
+    <link rel="stylesheet" href="{% static 'styles-common.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="{% static 'book.png' %}" alt="BookSwap Logo">
+                <span>BookSwap</span>
+            </div>
+            <nav class="main-nav">
+                {% if user.is_authenticated %}
+                <ul>
+                    <li><a href="{% url 'home' %}" class="active">Home</a></li>
+                    <li><a href="{% url 'catalog' %}">Catalog</a></li>
+                    <li><a href="">Messages</a></li>
+                    <li><a href="{% url 'profile' %}">{{ user.username }}</a></li>
+                    <li><a href="{% url 'logout' %}" ">Logout</a></li>
+                </ul>
+                {% else %}
+                
+                <ul>
+                    <li><a href="{% url 'home' %}" class="active">Home</a></li>
+                    <li><a href="{% url 'catalog' %}">Catalog</a></li>
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'signup' %}">Signup</a></li>
+                </ul>
+                {% endif %}
+                
+            </nav>
+            <div class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Share Books, <br>Connect Readers</h1>
+                    <p>BookSwap connects book lovers to exchange their favorite reads. Find your next adventure and share your literary treasures with others.</p>
+                    {% if user.is_authenticated %}
+                    <div class="hero-buttons">
+                        <a href="{% url 'book-upload' %}" class="btn btn-primary">Sell Books</a>
+                        <a href="{% url 'catalog' %}" class="btn btn-primary">Purchase Books</a>
+                    </div>
+                    {% else %}
+                    <div class="hero-buttons">
+                        <a href="{% url 'signup' %}" class="btn btn-primary">Join BookSwap</a>
+                        <a href="{% url 'login' %}" class="btn btn-outline">Sign In</a>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="hero-image">
+                    <img src="{% static 'Home_image.jpeg' %}" alt="Books on a shelf" style="width: 1000px; height: 500px; object-fit: cover; 
+                    margin-top: 30px;       
+                    border-radius: 20px;       
+                    filter: blur(0.5px);         
+                    box-shadow: 0 0 10px rgba(0,0,0,0.5);">>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <div class="container">
+            <h2 class="section-title">How BookSwap Works</h2>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="{% static 'to-do-list.png' %}" alt="List Books Icon" style="width: 25px; height: 30px; object-fit: cover;">
+                    </div>
+                    <h3>List Your Books</h3>
+                    <p>Add books you're willing to exchange to your personal library.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="{% static 'team-building.png' %}" alt="Find Matches Icon" style="width: 25px; height: 30px; object-fit: cover;">
+                    </div>
+                    <h3>Find Matches</h3>
+                    <p>Discover readers with books you want and who might want yours.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <img src="{% static 'book_exchange.png' %}" alt="Exchange Books Icon" style="width: 25px; height: 30px; object-fit: cover;">
+                    </div>
+                    <h3>Exchange Books</h3>
+                    <p>Chat with other readers and arrange your book exchange.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    
+
+    <!-- Featured Books -->
+    <section class="featured-books">
+        <div class="container">
+            <h2 class="section-title">Featured Books Available</h2>
+            
+            <div class="books-grid">
+                {% for book in featured_books %}
+                <a href="{% url 'book-details' book.book_id %}"><div class="book-card">
+                    <div class="book-cover">
+                        <img src="{{ book.coverimage.url }}" alt="Book cover" style="width: 200px; height: 280px; object-fit: cover;">
+                    </div>
+                    <h3>{{book.book_title}}</h3>
+                    <p>{{book.author|truncatechars:15}}</p>
+                </div></a>
+                {% endfor %}
+            </div>
+            
+
+            <div class="center-button">
+                <a href="{% url 'catalog' %}" class="btn btn-outline">Browse All Books</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="section-title">What Our Community Says</h2>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">
+                            <img src="{% static 'user.png' %}" alt="User avatar" style="width: 30px; height: 35px; object-fit: cover;"">
+                        </div>
+                        <div class="testimonial-user">
+                            <h3>Sarah Johnson</h3>
+                            <p>Book Enthusiast</p>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"I've discovered so many amazing books through BookSwap that I would have never found otherwise. The community is friendly and passionate about reading!"</p>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">
+                            <img src="images/user2.jpg" alt="User avatar">
+                        </div>
+                        <div class="testimonial-user">
+                            <h3>Michael Chen</h3>
+                            <p>Literature Professor</p>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"BookSwap has revolutionized how I refresh my personal library. I've connected with readers across the country and expanded my literary horizons."</p>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">
+                            <img src="images/user3.jpg" alt="User avatar">
+                        </div>
+                        <div class="testimonial-user">
+                            <h3>Emma Wilson</h3>
+                            <p>Avid Reader</p>
+                        </div>
+                    </div>
+                    <p class="testimonial-text">"The platform is so easy to use, and I love how it's helped me declutter my bookshelves while still ensuring my books find loving homes with fellow readers."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Start Exchanging Books?</h2>
+            <p>Join our community of book lovers today and start sharing your literary journey.</p>
+            <a href="signup.html" class="btn btn-light">Sign Up Now</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <h3>BookSwap</h3>
+                    <p>Connecting readers, one book at a time.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="login.html">Login</a></li>
+                        <li><a href="signup.html">Sign Up</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">How It Works</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 BookSwap. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple mobile menu toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.querySelector('.main-nav').classList.toggle('active');
+            this.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

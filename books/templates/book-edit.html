@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Book - BookSwap</title>
+    <link rel="stylesheet" href="styles-common.css">
+    <link rel="stylesheet" href="styles-book-edit.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="{% static 'book.png' %}" alt="BookSwap Logo">
+                <span>BookSwap</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="catalog.html">Catalog</a></li>
+                    <li><a href="chat.html">Messages</a></li>
+                    <li><a href="profile.html" class="active">Profile</a></li>
+                    <li><a href="index.html" class="logout-link">Logout</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="book-edit-page">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="profile.html">My Profile</a>
+                <span class="breadcrumb-separator">›</span>
+                <a href="profile.html">My Books</a>
+                <span class="breadcrumb-separator">›</span>
+                <span class="current-page">Edit Book</span>
+            </div>
+
+            <div class="book-edit-container">
+                <div class="book-edit-header">
+                    <h1>Edit Book Listing</h1>
+                    <div class="book-status">
+                        <span class="status-badge active">Active</span>
+                        <div class="status-toggle">
+                            <input type="checkbox" id="listing-status" checked>
+                            <label for="listing-status" class="toggle-label"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <form class="book-edit-form">
+                    <div class="form-grid">
+                        <!-- Book Images Upload Section -->
+                        <div class="book-images-upload">
+                            <h3 class="form-section-title">Book Images</h3>
+                            
+                            <div class="main-image-upload">
+                                <div class="image-preview">
+                                    <img src="images/book1.jpg" alt="Book Cover" id="main-image-preview">
+                                    <label for="main-image" class="image-upload-overlay">
+                                        <img src="images/camera-icon.png" alt="Upload" class="image-upload-icon">
+                                    </label>
+                                </div>
+                                <input type="file" id="main-image" class="image-upload-btn" accept="image/*">
+                                <div class="image-actions">
+                                    <label for="main-image" class="image-upload-label">Change Cover Image</label>
+                                    <button type="button" class="image-delete-btn" id="delete-main-image">Remove</button>
+                                </div>
+                            </div>
+                            
+                            <div class="additional-images">
+                                <p class="additional-images-label">Additional Images</p>
+                                <div class="additional-images-grid">
+                                    <div class="additional-image-item">
+                                        <div class="image-preview small">
+                                            <img src="images/book1-detail1.jpg" alt="Additional Image" id="additional-image-1-preview">
+                                            <label for="additional-image-1" class="image-upload-overlay">
+                                                <img src="images/camera-icon.png" alt="Upload" class="image-upload-icon">
+                                            </label>
+                                            <button type="button" class="image-remove-btn" data-image="1">&times;</button>
+                                        </div>
+                                        <input type="file" id="additional-image-1" class="image-upload-btn" accept="image/*">
+                                    </div>
+                                    <div class="additional-image-item">
+                                        <div class="image-preview small">
+                                            <img src="images/book1-detail2.jpg" alt="Additional Image" id="additional-image-2-preview">
+                                            <label for="additional-image-2" class="image-upload-overlay">
+                                                <img src="images/camera-icon.png" alt="Upload" class="image-upload-icon">
+                                            </label>
+                                            <button type="button" class="image-remove-btn" data-image="2">&times;</button>
+                                        </div>
+                                        <input type="file" id="additional-image-2" class="image-upload-btn" accept="image/*">
+                                    </div>
+                                    <div class="additional-image-item">
+                                        <div class="image-preview small">
+                                            <img src="images/image-placeholder.jpg" alt="Additional Image" id="additional-image-3-preview">
+                                            <label for="additional-image-3" class="image-upload-overlay">
+                                                <img src="images/camera-icon.png" alt="Upload" class="image-upload-icon">
+                                            </label>
+                                        </div>
+                                        <input type="file" id="additional-image-3" class="image-upload-btn" accept="image/*">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="listing-stats">
+                                <h3 class="form-section-title">Listing Statistics</h3>
+                                <div class="stats-grid">
+                                    <div class="stat-item">
+                                        <div class="stat-value">247</div>
+                                        <div class="stat-label">Views</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-value">18</div>
+                                        <div class="stat-label">Saves</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-value">5</div>
+                                        <div class="stat-label">Inquiries</div>
+                                    </div>
+                                </div>
+                                <div class="listing-date">
+                                    <p>Listed on: <span>June 15, 2023</span></p>
+                                    <p>Last updated: <span>August 3, 2023</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Book Details Section -->
+                        <div class="book-details-form">
+                            <h3 class="form-section-title">Book Details</h3>
+                            
+                            <div class="form-group">
+                                <label for="book-title">Book Title*</label>
+                                <input type="text" id="book-title" required value="The Great Gatsby">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="book-author">Author*</label>
+                                <input type="text" id="book-author" required value="F. Scott Fitzgerald">
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="book-price">Price*</label>
+                                    <div class="price-input-group">
+                                        <span>₹</span>
+                                        <input type="number" id="book-price" required min="0" step="0.01" value="100">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="book-condition">Condition*</label>
+                                    <select id="book-condition" required>
+                                        <option value="">Select condition</option>
+                                        <option value="new">New</option>
+                                        <option value="like-new" selected>Like New</option>
+                                        <option value="very-good">Very Good</option>
+                                        <option value="good">Good</option>
+                                        <option value="acceptable">Acceptable</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="book-category">Category*</label>
+                                <select id="book-category" required>
+                                    <option value="">Select category</option>
+                                    <option value="fiction" selected>Fiction</option>
+                                    <option value="non-fiction">Non-Fiction</option>
+                                    <option value="science-fiction">Science Fiction</option>
+                                    <option value="fantasy">Fantasy</option>
+                                    <option value="mystery">Mystery</option>
+                                    <option value="romance">Romance</option>
+                                    <option value="thriller">Thriller</option>
+                                    <option value="horror">Horror</option>
+                                    <option value="biography">Biography</option>
+                                    <option value="history">History</option>
+                                    <option value="self-help">Self-Help</option>
+                                    <option value="business">Business</option>
+                                    <option value="cooking">Cooking</option>
+                                    <option value="art">Art</option>
+                                    <option value="travel">Travel</option>
+                                    <option value="children">Children's</option>
+                                    <option value="young-adult">Young Adult</option>
+                                    <option value="poetry">Poetry</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="book-isbn">ISBN (Optional)</label>
+                                    <input type="text" id="book-isbn" value="9780743273565">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="book-language">Language*</label>
+                                    <select id="book-language" required>
+                                        <option value="">Select language</option>
+                                        <option value="english" selected>English</option>
+                                        <option value="spanish">Spanish</option>
+                                        <option value="french">French</option>
+                                        <option value="german">German</option>
+                                        <option value="chinese">Chinese</option>
+                                        <option value="japanese">Japanese</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="book-publisher">Publisher (Optional)</label>
+                                    <input type="text" id="book-publisher" value="Scribner">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="book-publication-year">Publication Year (Optional)</label>
+                                    <input type="number" id="book-publication-year" min="1800" max="2099" value="2004">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="book-description">Description*</label>
+                                <textarea id="book-description" rows="5" required>The Great Gatsby is a 1925 novel by American writer F. Scott Fitzgerald. Set in the Jazz Age on Long Island, near New York City, the novel depicts first-person narrator Nick Carraway's interactions with mysterious millionaire Jay Gatsby and Gatsby's obsession to reunite with his former lover, Daisy Buchanan.
+
+This edition is in excellent condition with minimal wear. The cover is intact with no creases, and all pages are clean and unmarked. This is a beautiful copy of this classic American novel.</textarea>
+                            </div>
+                            
+                            <h3 class="form-section-title">Exchange Details</h3>
+                            
+                            <div class="form-group full-width">
+                                <label>Exchange Options</label>
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="local-pickup" checked>
+                                    <label for="local-pickup">Local pickup</label>
+                                </div>
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="shipping" checked>
+                                    <label for="shipping">Shipping (buyer pays shipping)</label>
+                                </div>
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="meetup">
+                                    <label for="meetup">Public meetup</label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label for="book-location">Location*</label>
+                                <input type="text" id="book-location" required value="Brooklyn, NY">
+                                <p class="form-help-text">This helps local users find your book. Your exact address will not be shared.</p>
+                            </div>
+                            
+                            <div class="form-group full-width">
+                                <label>Additional Tags</label>
+                                <div class="tags-input-container">
+                                    <div class="tags-container" id="tags-container">
+                                        <div class="tag">
+                                            <span>classic</span>
+                                            <button type="button" class="remove-tag" data-tag="classic">&times;</button>
+                                        </div>
+                                        <div class="tag">
+                                            <span>american literature</span>
+                                            <button type="button" class="remove-tag" data-tag="american literature">&times;</button>
+                                        </div>
+                                        <div class="tag">
+                                            <span>1920s</span>
+                                            <button type="button" class="remove-tag" data-tag="1920s">&times;</button>
+                                        </div>
+                                    </div>
+                                    <input type="text" id="tag-input" placeholder="Type a tag and press Enter">
+                                </div>
+                                <p class="form-help-text">Add relevant tags to help users find your book (e.g., "bestseller", "signed copy", "first edition")</p>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-outline delete-listing">Delete Listing</button>
+                                <div class="primary-actions">
+                                    <button type="button" class="btn btn-outline">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" id="delete-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Delete Book Listing</h3>
+                <button type="button" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this book listing? This action cannot be undone.</p>
+                <p class="warning-text">Any pending exchanges or inquiries for this book will be canceled.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" id="cancel-delete">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirm-delete">Delete Listing</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <h3>BookSwap</h3>
+                    <p>Connecting readers, one book at a time.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="catalog.html">Catalog</a></li>
+                        <li><a href="profile.html">Profile</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">How It Works</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 BookSwap. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple mobile menu toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.querySelector('.main-nav').classList.toggle('active');
+            this.classList.toggle('active');
+        });
+        
+        // Main image preview
+        document.getElementById('main-image').addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    document.getElementById('main-image-preview').src = e.target.result;
+                }
+                
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+        
+        // Additional images preview
+        document.getElementById('additional-image-1').addEventListener('change', function(e) {
+            previewImage(e, 'additional-image-1-preview');
+        });
+        
+        document.getElementById('additional-image-2').addEventListener('change', function(e) {
+            previewImage(e, 'additional-image-2-preview');
+        });
+        
+        document.getElementById('additional-image-3').addEventListener('change', function(e) {
+            previewImage(e, 'additional-image-3-preview');
+        });
+        
+        function previewImage(event, previewId) {
+            if (event.target.files && event.target.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    document.getElementById(previewId).src = e.target.result;
+                }
+                
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        }
+        
+        // Remove image functionality
+        document.querySelectorAll('.image-remove-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const imageNumber = this.getAttribute('data-image');
+                document.getElementById(`additional-image-${imageNumber}-preview`).src = 'images/image-placeholder.jpg';
+                document.getElementById(`additional-image-${imageNumber}`).value = '';
+            });
+        });
+        
+        // Delete main image
+        document.getElementById('delete-main-image').addEventListener('click', function() {
+            if (confirm('Are you sure you want to remove the main image? A book listing must have at least one image.')) {
+                document.getElementById('main-image-preview').src = 'images/book-placeholder.jpg';
+                document.getElementById('main-image').value = '';
+            }
+        });
+        
+        // Listing status toggle
+        document.getElementById('listing-status').addEventListener('change', function() {
+            const statusBadge = document.querySelector('.status-badge');
+            if (this.checked) {
+                statusBadge.textContent = 'Active';
+                statusBadge.classList.remove('inactive');
+                statusBadge.classList.add('active');
+            } else {
+                statusBadge.textContent = 'Inactive';
+                statusBadge.classList.remove('active');
+                statusBadge.classList.add('inactive');
+            }
+        });
+        
+        // Tags functionality
+        const tagInput = document.getElementById('tag-input');
+        const tagsContainer = document.getElementById('tags-container');
+        let tags = ['classic', 'american literature', '1920s'];
+        
+        tagInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ',') {
+                e.preventDefault();
+                
+                const tag = tagInput.value.trim();
+                if (tag && !tags.includes(tag) && tags.length < 10) {
+                    tags.push(tag);
+                    renderTags();
+                }
+                
+                tagInput.value = '';
+            }
+        });
+        
+        // Initialize remove tag buttons
+        document.querySelectorAll('.remove-tag').forEach(button => {
+            button.addEventListener('click', function() {
+                const tagToRemove = this.getAttribute('data-tag');
+                tags = tags.filter(tag => tag !== tagToRemove);
+                renderTags();
+            });
+        });
+        
+        function renderTags() {
+            tagsContainer.innerHTML = '';
+            
+            tags.forEach(tag => {
+                const tagElement = document.createElement('div');
+                tagElement.classList.add('tag');
+                tagElement.innerHTML = `
+                    <span>${tag}</span>
+                    <button type="button" class="remove-tag" data-tag="${tag}">&times;</button>
+                `;
+                tagsContainer.appendChild(tagElement);
+            });
+            
+            // Add event listeners to remove buttons
+            document.querySelectorAll('.remove-tag').forEach(button => {
+                button.addEventListener('click', function() {
+                    const tagToRemove = this.getAttribute('data-tag');
+                    tags = tags.filter(tag => tag !== tagToRemove);
+                    renderTags();
+                });
+            });
+        }
+        
+        // Delete listing modal
+        const modal = document.getElementById('delete-modal');
+        const deleteBtn = document.querySelector('.delete-listing');
+        const closeBtn = document.querySelector('.modal-close');
+        const cancelBtn = document.getElementById('cancel-delete');
+        const confirmBtn = document.getElementById('confirm-delete');
+        
+        deleteBtn.addEventListener('click', function() {
+            modal.classList.add('active');
+        });
+        
+        closeBtn.addEventListener('click', function() {
+            modal.classList.remove('active');
+        });
+        
+        cancelBtn.addEventListener('click', function() {
+            modal.classList.remove('active');
+        });
+        
+        confirmBtn.addEventListener('click', function() {
+            // Here you would normally send a delete request to the server
+            alert('Book listing deleted successfully!');
+            window.location.href = 'profile.html';
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+        
+        // Form submission
+        document.querySelector('.book-edit-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Here you would normally send the form data to the server
+            alert('Book listing updated successfully!');
+            window.location.href = 'profile.html';
+        });
+        
+        // Cancel button
+        document.querySelector('.primary-actions .btn-outline').addEventListener('click', function() {
+            if (confirm('Are you sure you want to cancel? Any unsaved changes will be lost.')) {
+                window.location.href = 'profile.html';
+            }
+        });
+    </script>
+</body>
+</html>

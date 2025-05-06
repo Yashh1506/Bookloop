@@ -1,0 +1,211 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Catalog - BookSwap</title>
+    <link rel="stylesheet" href="{% static 'styles-common.css' %}">
+    <link rel="stylesheet" href="{% static 'styles-catalog.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="{% static 'book.png' %}" alt="BookSwap Logo">
+                <span>BookSwap</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'catalog' %}" class="active">Catalog</a></li>
+                    {% if user.is_authenticated %}
+                    <li><a href="chat.html">Messages</a></li>
+                    <li><a href="{% url 'profile' %}">{{user.username}}</a></li>
+                    <li><a href="{% url 'logout' %}" class="logout-link">Logout</a></li>
+                    {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'signup' %}" >Signup</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+            <div class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Catalog Navigation Bar -->
+    <div class="catalog-nav">
+        <div class="container">
+            <div class="catalog-nav-content">
+                <div class="catalog-search">
+                    <input type="text" placeholder="Search books, authors, genres...">
+                    <button class="search-btn">
+                        <img src="{% static 'loupe.png' %}" alt="Search">
+                    </button>
+                </div>
+                
+                <div class="catalog-actions">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="catalog-page">
+        <div class="container">
+            <div class="catalog-header">
+                <h1>Book Catalog</h1>
+                <p>Find your next reading adventure from our community's collection</p>
+            </div>
+
+            <!-- Filter Panel (Initially Hidden) -->
+            
+
+            <!-- Books Grid -->
+            <div class="catalog-grid">
+                {% for book in all_books %}
+                {% if user.username != book.user.username %}
+                <!-- Book Card 1 -->
+                <a href="{% url 'book-details' book.book_id %}" class="book-card-link">
+                    <div class="catalog-book-card">
+                        <div class="book-cover">
+                            <img src="{{ book.coverimage.url }}" alt="{{ book.book_title }}">
+                            <div class="book-price">₹{{ book.price }}</div>
+                        </div>
+                        <div class="book-info">
+                            <h3>{{ book.book_title }}</h3>
+                            <p class="book-author">{{ book.author }}</p>
+                            <div class="book-meta">
+                                <span class="book-category">{{ book.category }}</span>
+                                <span class="book-condition">{{ book.condition }}</span>
+                            </div>
+                            <div class="book-owner">
+                                <div class="owner-avatar">
+                                    <img src="{{book.user.userprofile.profile_pic.url}}" alt="{{book.user.username}}">
+                                </div>
+                                <span class="owner-name">{{ book.user.username }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                {% endif %}
+                {% endfor %}
+            
+
+                
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <h3>BookSwap</h3>
+                    <p>Connecting readers, one book at a time.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="catalog.html">Catalog</a></li>
+                        <li><a href="profile.html">Profile</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">How It Works</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 BookSwap. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple mobile menu toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.querySelector('.main-nav').classList.toggle('active');
+            this.classList.toggle('active');
+        });
+
+        // Filter panel toggle
+        document.querySelector('.filter-btn').addEventListener('click', function() {
+            document.getElementById('filter-panel').classList.toggle('active');
+        });
+
+        document.querySelector('.close-filter-btn').addEventListener('click', function() {
+            document.getElementById('filter-panel').classList.remove('active');
+        });
+
+        // Sort dropdown toggle
+        document.querySelector('.sort-btn').addEventListener('click', function() {
+            document.querySelector('.sort-menu').classList.toggle('active');
+        });
+
+        // Close sort dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const sortDropdown = document.querySelector('.sort-dropdown');
+            if (!sortDropdown.contains(event.target)) {
+                document.querySelector('.sort-menu').classList.remove('active');
+            }
+        });
+
+        // Sort option selection
+        const sortOptions = document.querySelectorAll('.sort-option');
+        sortOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                sortOptions.forEach(opt => opt.classList.remove('active'));
+                this.classList.add('active');
+                document.querySelector('.sort-menu').classList.remove('active');
+                // In a real implementation, this would sort the books
+            });
+        });
+
+        // Remove filter tag
+        const removeFilterBtns = document.querySelectorAll('.remove-filter');
+        removeFilterBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                this.parentElement.remove();
+            });
+        });
+
+        // Clear all filters
+        document.querySelector('.clear-filters').addEventListener('click', function() {
+            const filterTags = document.querySelectorAll('.filter-tag');
+            filterTags.forEach(tag => tag.remove());
+        });
+
+        // Pagination
+        const paginationNumbers = document.querySelectorAll('.pagination-number');
+        paginationNumbers.forEach(btn => {
+            btn.addEventListener('click', function() {
+                paginationNumbers.forEach(num => num.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile - BookSwap</title>
+    <link rel="stylesheet" href="{% static 'styles-profile-edit.css' %}">
+    <link rel="stylesheet" href="{% static 'styles-common.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="{% static 'book.png' %}" alt="BookSwap Logo">
+                <span>BookSwap</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'catalog' %}">Catalog</a></li>
+                    <li><a href="chat.html">Messages</a></li>
+                    <li><a href="{% url 'profile' %}" class="active">{{user.username}}</a></li>
+                    <li><a href="{% url 'logout' %}" class="logout-link">Logout</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="profile-edit-page">
+        <div class="container">
+            <div class="profile-edit-container">
+                <div class="profile-edit-header">
+                    <h1>Edit Profile</h1>
+                    <a href="{% url 'profile' %}" class="btn btn-outline">Cancel</a>
+                </div>
+                
+                <form class="profile-edit-form" enctype="multipart/form-data" method="POST" action="{% url 'edit-profile' %}">
+                    <!-- Profile Image Section -->
+                     {% csrf_token %}
+                    <div class="profile-image-upload">
+                        <div class="image-preview">
+                            <img src="{{ userprofile.profile_pic.url }}" alt="Profile Picture">
+                            <label for="profile-image" class="image-upload-overlay">
+                                <img src="images/camera-icon.png" alt="Upload" class="image-upload-icon">
+                            </label>
+                        </div>
+                        <input type="file" id="profile-image" class="image-upload-btn" name="profile_pic" accept="image/*">
+                        <label for="profile-image" class="image-upload-label">Change Profile Picture</label>
+                    </div>
+                    
+                    <!-- Profile Form Fields -->
+                    <div class="profile-form-fields">
+                        <h3 class="form-section-title">Personal Information</h3>
+                        
+                        <div class="form-group">
+                            <label for="first-name">First Name</label>
+                            <input type="text" id="first-name" required name="first_name" value="{{user.first_name}}">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="last-name">Last Name</label>
+                            <input type="text" id="last-name"  required name="last_name" value="{{user.last_name}}">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email"  value="{{user.email}}" required> 
+                        </div>
+                        
+                        
+                        <div class="form-group full-width">
+                            <label for="bio">Bio</label>
+                            <textarea id="bio" name="bio" rows="4">{{userprofile.bio}}</textarea>
+                        </div>
+                        
+                        
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input type="text" id="city" name="city" value="{{userprofile.city}}" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="state">State</label>
+                            <input type="text" id="state" name="state" value="{{userprofile.state}}">
+                        </div>
+                        
+                                
+                        <div class="form-group">
+                            <label for="country">Country</label> 
+                            <input type="text" id="state" name="country" value="{{userprofile.country}}">
+                        </div>
+                        
+                        <h3 class="form-section-title">Preferences</h3>
+                        
+                        <div class="form-group full-width">
+                            <label>Favorite Genres</label>
+                            <div class="filter-options-grid">
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" name="preferences" value="fiction" checked>
+                                    <span>Fiction</span>
+                                </label>
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" name="preferences" value="fantasy">
+                                    <span>Fantasy</span>
+                                </label>
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" name="preferences" value="science-fiction" checked>
+                                    <span>Science Fiction</span>
+                                </label>
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" name="preferences" value="mystery">
+                                    <span>Mystery</span>
+                                </label>
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" name="preferences" value="romance">
+                                    <span>Romance</span>
+                                </label>
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" name="preferences" value="historical" checked>
+                                    <span>Historical</span>
+                                </label>
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" name="preferences" value="biography">
+                                    <span>Biography</span>
+                                </label>
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" name="preferences" value="self-help">
+                                    <span>Self-Help</span>
+                                </label>
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" name="preferences" value="business">
+                                    <span>Business</span>
+                                </label>
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" name="preferences" value="poetry">
+                                    <span>Poetry</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Exchange Preferences</label>
+                            <div class="filter-options-grid">
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" name="exchange_preferences" value="Local Pickup" checked>
+                                    <span>Local Pickup</span>
+                                </label>
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" name="exchange_preferences" value="Shipping">
+                                    <span>Shipping</span>
+                                </label>
+                                <label class="filter-checkbox">
+                                    <input type="checkbox" name="exchange_preferences" value="Public Meetup" checked>
+                                    <span>Public Meetup</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <a href="{% url 'profile' %}"><button type="button" class="btn btn-outline">Cancel</button></a>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <h3>BookSwap</h3>
+                    <p>Connecting readers, one book at a time.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="catalog.html">Catalog</a></li>
+                        <li><a href="profile.html">Profile</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">How It Works</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 BookSwap. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple mobile menu toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.querySelector('.main-nav').classList.toggle('active');
+            this.classList.toggle('active');
+        });
+        
+        // Profile image preview
+        document.getElementById('profile-image').addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    document.querySelector('.image-preview img').src = e.target.result;
+                }
+                
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+        
+        // Form submission
+        // document.querySelector('.profile-edit-form').addEventListener('submit', function(e) {
+        //     e.preventDefault();
+        //     alert('Profile updated successfully!');
+        //     window.location.href = 'profile.html';
+        // });
+        
+        // Cancel button
+        document.querySelector('.form-actions .btn-outline').addEventListener('click', function() {
+            window.location.href = 'profile.html';
+        });
+    </script>
+</body>
+</html>

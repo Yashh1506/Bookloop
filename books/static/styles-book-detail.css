@@ -1,0 +1,261 @@
+/* Book Detail Page */
+.book-detail-page {
+padding: 2rem 0;
+}
+
+.breadcrumb {
+margin-bottom: 1.5rem;
+font-size: 0.875rem;
+}
+
+.breadcrumb a {
+color: var(--text-light);
+}
+
+.breadcrumb a:hover {
+color: var(--primary-color);
+}
+
+.breadcrumb-separator {
+margin: 0 0.5rem;
+color: var(--text-light);
+}
+
+.current-page {
+color: var(--text-color);
+font-weight: 500;
+}
+
+.book-detail-container {
+display: grid;
+grid-template-columns: 1fr 2fr;
+gap: 2rem;
+margin-bottom: 3rem;
+}
+
+.book-images {
+display: flex;
+flex-direction: column;
+gap: 1rem;
+}
+
+.book-main-image {
+background-color: var(--white);
+border-radius: var(--border-radius);
+overflow: hidden;
+box-shadow: var(--shadow);
+height: 400px;
+}
+
+.book-main-image img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+
+.book-thumbnails {
+display: flex;
+gap: 0.5rem;
+}
+
+.book-thumbnail {
+width: 80px;
+height: 80px;
+border-radius: var(--border-radius);
+overflow: hidden;
+cursor: pointer;
+border: 2px solid transparent;
+transition: var(--transition);
+}
+
+.book-thumbnail.active {
+border-color: var(--primary-color);
+}
+
+.book-thumbnail img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+
+.book-details {
+background-color: var(--white);
+border-radius: var(--border-radius);
+padding: 2rem;
+box-shadow: var(--shadow);
+}
+
+.book-header {
+display: flex;
+justify-content: space-between;
+align-items: flex-start;
+margin-bottom: 0.5rem;
+}
+
+.book-header h1 {
+font-size: 1.75rem;
+color: var(--primary-dark);
+}
+
+.book-header .book-price {
+position: static;
+font-size: 1.25rem;
+}
+
+.book-author {
+font-size: 1rem;
+color: var(--text-light);
+margin-bottom: 1rem;
+}
+
+.book-meta-tags {
+display: flex;
+flex-wrap: wrap;
+gap: 0.5rem;
+margin-bottom: 1.5rem;
+}
+
+.book-category {
+background-color: var(--secondary-color);
+color: var(--primary-color);
+padding: 0.25rem 0.5rem;
+border-radius: 20px;
+font-size: 0.75rem;
+font-weight: 500;
+}
+
+.book-published {
+background-color: #f0f0f0;
+color: var(--text-light);
+padding: 0.25rem 0.5rem;
+border-radius: 20px;
+font-size: 0.75rem;
+}
+
+.book-description {
+margin-bottom: 1.5rem;
+}
+
+.book-description h2 {
+font-size: 1.25rem;
+color: var(--primary-dark);
+margin-bottom: 0.75rem;
+}
+
+.book-description p {
+color: var(--text-color);
+margin-bottom: 1rem;
+line-height: 1.6;
+}
+
+.book-details-list {
+margin-bottom: 1.5rem;
+}
+
+.detail-item {
+display: flex;
+padding: 0.75rem 0;
+border-bottom: 1px solid var(--border-color);
+}
+
+.detail-item:last-child {
+border-bottom: none;
+}
+
+.detail-label {
+font-weight: 500;
+width: 100px;
+color: var(--text-light);
+}
+
+.detail-value {
+flex: 1;
+}
+
+.book-owner-detail {
+margin-bottom: 1.5rem;
+}
+
+.book-owner-detail h2 {
+font-size: 1.25rem;
+color: var(--primary-dark);
+margin-bottom: 0.75rem;
+}
+
+.owner-card {
+display: flex;
+align-items: center;
+gap: 1rem;
+background-color: var(--secondary-color);
+padding: 1rem;
+border-radius: var(--border-radius);
+}
+
+.owner-card .owner-avatar {
+width: 64px;
+height: 64px;
+margin-right: 0;
+}
+
+.owner-info {
+flex: 1;
+}
+
+.owner-info h3 {
+font-size: 1rem;
+margin-bottom: 0.25rem;
+}
+
+.owner-location, .owner-joined, .book-distance {
+font-size: 0.875rem;
+color: var(--text-light);
+}
+
+.book-actions {
+display: flex;
+flex-direction: column;
+gap: 0.75rem;
+}
+
+.similar-books-section {
+margin-bottom: 3rem;
+}
+
+.similar-books-section h2 {
+font-size: 1.5rem;
+color: var(--primary-dark);
+margin-bottom: 1.5rem;
+}
+
+.similar-books-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+gap: 1.5rem;
+}
+
+/* ===== Responsive Styles for Book Detail Page ===== */
+@media (max-width: 992px) {
+.book-detail-container {
+    grid-template-columns: 1fr;
+}
+
+.book-images {
+    max-width: 500px;
+    margin: 0 auto;
+}
+}
+
+@media (max-width: 576px) {
+.book-header {
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.book-header .book-price {
+    align-self: flex-start;
+}
+
+.similar-books-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+}
+}

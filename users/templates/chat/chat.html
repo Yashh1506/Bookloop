@@ -1,0 +1,177 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages - BookSwap</title>
+    <!-- <link rel="stylesheet" href="{% static 'styles-common.css' %}"> -->
+    <link rel="stylesheet" href="{% static 'styles-common.css' %}">
+    <link rel="stylesheet" href="{% static 'styles-chat.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="{% static 'book.png' %}" alt="BookSwap Logo">
+                <span>BookSwap</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'catalog' %}">Catalog</a></li>
+                    <li><a href="{% url 'chat' user.username %}" class="active">Messages</a></li>
+                    <li><a href="{% url 'profile' %}">{{user.username}}</a></li>
+                    <li><a href="{% url 'logout' %}" class="logout-link">Logout</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Chat Interface -->
+    <main class="chat-page">
+        <div class="container">
+            <div class="chat-container">
+                <!-- Conversations List -->
+                <div class="conversations-list" id="conversations-list">
+                    <div class="conversations-header">
+                        <h2>Messages</h2>
+                    </div>
+                    
+                    <div class="conversations">
+                        {% for u in users %}
+                        <a href="{% url 'chat' u.username %}">
+                            {% if u == other_user %}
+                            <div class="active" style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                            {% else %}
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                            {% endif %}
+                            <div class="conversation-avatar">
+                                {% if u.userprofile.profile_pic %}
+                                <img src="{{ u.userprofile.profile_pic.url }}" alt="{{ u.username }}" style="width: 50px; height: 50px; border-radius: 30px;">
+                                {% else %}
+                                <img src="{% static 'user.png' %}" alt="{{ u.username }}" style="width: 50px; height: 50px;">
+                                {% endif %}
+                                <span class="status-dot online"></span>
+                            </div>
+                            <div class="conversation-info">
+                                <div class="conversation-header">
+                                    <h4>{{u.username}}</h4>
+                                </div>
+                                <p class="conversation-preview" style="font-size: small;">Click to chat</p>
+                            </div>
+                        </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <!-- Chat Area -->
+                <div class="chat-area" id="chat-area" style=" width: 565px ;border: 2px solid #ccc; border-radius: 10px; padding: 15px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8); background-color: rgb(255, 255, 255);">
+                    <!-- Chat Header -->
+                    <div class="chat-header">
+                        <button class="back-to-conversations" id="back-to-conversations">
+    
+                        </button>
+                        <div class="chat-user">
+                            <div class="chat-avatar">
+                                {% if other_user.userprofile.profile_pic %}
+                                <img src="{{ other_user.userprofile.profile_pic.url }}" alt="{{ u.username }}" style="width: 30px; height: 30px; border-radius: 30px;">
+                                {% else %}
+                                <img src="{% static 'user.png' %}" alt="{{ u.username }}" style="width: 30px; height: 30px; border-radius: 30px;">
+                                {% endif %}
+                                <span class="status-dot online"></span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <h3 style="margin: 0;">{{ other_user.first_name }}</h3>
+                                <p style="color: green; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; margin: 0;">
+                                    ({{ other_user.username }})
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Messages -->
+                    {% for message in messages %}
+                    <div class="message {% if message.sender == request.user %}me{% else %}other{% endif %}">
+                    <div class="message-content">
+                        <p style="color: green; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">{{message.sender}}</p>
+                        <p>{{ message.content }}</p>
+                        <span class="message-time">{{ message.timestamp|time:"H:i A" }}</span>
+                    </div>
+                    </div>
+                    {% endfor %}
+
+                    
+                    <!-- Message Input -->
+                    <div class="message-input-container">
+                        <form class="message-form" method="POST" action="{% url 'chat' other_user.username %}">
+                            {% csrf_token %}
+                            <input type="text" placeholder="Type a message..." class="message-input" name="message" style="width: 500px; height: 30px;">
+                            <button type="submit" class="send-button">
+                                <img src="{% static 'send.png' %}" alt="Send" style="width: 20px; height: 20px;">
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Simple mobile menu toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.querySelector('.main-nav').classList.toggle('active');
+            this.classList.toggle('active');
+        });
+        
+        // Mobile chat navigation
+        const backButton = document.getElementById('back-to-conversations');
+        const conversationsList = document.getElementById('conversations-list');
+        const chatArea = document.getElementById('chat-area');
+        
+        backButton.addEventListener('click', function() {
+            conversationsList.classList.add('active');
+            chatArea.classList.remove('active');
+        });
+        
+        // Show chat when clicking on a conversation (mobile)
+        const conversationItems = document.querySelectorAll('.conversation-item');
+        
+        conversationItems.forEach(item => {
+            item.addEventListener('click', function() {
+                conversationsList.classList.remove('active');
+                chatArea.classList.add('active');
+                
+                // Remove active class from all conversations
+                conversationItems.forEach(conv => conv.classList.remove('active'));
+                
+                // Add active class to clicked conversation
+                this.classList.add('active');
+            });
+        });
+        
+        // Check if mobile view
+        function checkMobile() {
+            if (window.innerWidth < 768) {
+                conversationsList.classList.add('active');
+                chatArea.classList.remove('active');
+            } else {
+                conversationsList.classList.remove('active');
+                chatArea.classList.remove('active');
+            }
+        }
+        
+        // Run on page load and resize
+        window.addEventListener('load', checkMobile);
+        window.addEventListener('resize', checkMobile);
+    </script>
+</body>
+</html>

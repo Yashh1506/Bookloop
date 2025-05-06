@@ -1,0 +1,182 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - BookSwap</title>
+    <link rel="stylesheet" href="{% static 'styles-profile.css' %}">
+    <link rel="stylesheet" href="{% static 'styles-common.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <style>
+        .books-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: flex-start;
+            padding: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .book-card {
+            width: 220px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <img src="{% static 'book.png' %}" alt="BookSwap Logo">
+                <span>BookSwap</span>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'catalog' %}">Catalog</a></li>
+                    <li><a href="{% url 'home' %}">Messages</a></li>
+                    <li><a href="{% url 'profile' %}" class="active">{{ user.username }}</a></li>
+                    <li><a href="{% url 'logout' %}" class="logout-link">Logout</a></li>
+                </ul>
+            </nav>
+            <div class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="profile-page">
+        <div class="container">
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <img src="{{ userprofile.profile_pic.url }}" alt="Profile picture">
+                </div>
+                <div class="profile-info">
+                    <div class="profile-tags">
+                        <h1>{{ userprofile.user.username }}</h1>
+                        <p class="profile-location">Book enthusiast from {{ userprofile.city }}</p>
+                    </div>
+
+                    <div class="profile-tags">
+                        <h4 style="color: green;">Preferred Genres :</h4>
+                        {% for preference in preferences %}
+                            <h4>{{ preference }}</h4>
+                        {% endfor %}
+                    </div>
+
+                    <p class="profile-bio">
+                        <h4 style="color: green;">Bio :</h4>
+                        {{ userprofile.bio }}
+                    </p>
+                </div>
+
+                {% if request.user == viewed_user %}
+                    <div class="profile-actions">
+                        <a href="{% url 'edit-profile' %}">
+                            <button class="btn btn-primary">Edit Profile</button>
+                        </a>
+                    </div>
+                {% else %}
+                    {% if user.is_authenticated %}
+                        <div class="profile-actions">
+                            <a href="{% url 'chat' viewed_user.username %}">
+                                <div class="book-actions">
+                                    <button class="btn btn-outline btn-block">Message Owner</button>
+                                </div>
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="profile-actions">
+                            <a href="{% url 'login' %}">
+                                <div class="book-owner-detail">
+                                    <button class="btn btn-outline btn-block">Login to Message</button>
+                                </div>
+                            </a>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+
+            <!-- Profile Tabs -->
+            <div class="profile-tabs">
+                <!-- My Books Tab -->
+                <div class="tab-content active" id="my-books">
+                    {% if request.user == viewed_user %}
+                        <div class="tab-header">
+                            <a href="{% url 'book-upload' %}">
+                                <button class="btn btn-primary add-book-btn">
+                                    <img src="{% static 'plus.png' %}" alt="Add" class="btn-icon">
+                                    Add
+                                </button>
+                            </a>
+                        </div>
+                    {% endif %}
+
+                    <div class="books-grid">
+                        {% for book in all_books %}
+                            <div class="book-card">
+                                <div class="book-cover">
+                                    <img src="{{ book.coverimage.url }}" alt="{{ book.book_title }}" style="width: 200px; height: 300px; object-fit: cover;">
+                                </div>
+                                <div class="book-info">
+                                    <h3>{{ book.book_title }}</h3>
+                                    <p>{{ book.author }}</p>
+
+                                    <div class="book-meta">
+                                        <span class="tag">{{ book.tags }}</span>
+                                        <span class="book-condition">{{ book.condition }}</span>
+                                    </div>
+                                </div>
+                                {% if request.user == viewed_user %}
+                                    <div class="book-actions">
+                                        <a href="#"><button class="icon-btn edit-btn">
+                                            <img src="{% static 'edit.png' %}" alt="Edit" style="width: 20px; height: 20px; object-fit: cover;">
+                                        </button></a>
+                                        <a href="#"><button class="icon-btn delete-btn">
+                                            <img src="{% static 'trash.png' %}" alt="Delete" style="width: 20px; height: 20px; object-fit: cover;">
+                                        </button></a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Simple mobile menu toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function () {
+            document.querySelector('.main-nav').classList.toggle('active');
+            this.classList.toggle('active');
+        });
+
+        // Tab switching
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                button.classList.add('active');
+                const tabId = button.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
