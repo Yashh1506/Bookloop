@@ -79,8 +79,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'bookloop',
-        'USER': 'postgres',
-        'PASSWORD': 'mugdha2013@',
+        'USER': 'username',
+        'PASSWORD': 'yourpassword',
         'HOST': 'localhost',
         'PORT': '5433',
     }
